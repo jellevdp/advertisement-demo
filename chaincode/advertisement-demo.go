@@ -17,10 +17,6 @@ import (
 type SimpleChaincode struct {
 }
 
-type ECertResponse struct {
-	OK string `json:"OK"`
-}
-
 type Slot struct {
 	Id						string			`json:"id"`
 	StartTime     			int64 			`json:"startTime"`
@@ -62,18 +58,6 @@ type Payment struct {
 	SenderId				string			`json:"sender"`
 	Amount					int64			`json:"amount"`
 }
-
-//=================================================================================================================================
-//  Evaluation map - Equivalant to an enum for Golang
-//  Example:
-//  if(!SomeStatus[strings.ToUpper(status)]) { return nil, errors.New("Status not recognized") }
-//=================================================================================================================================
-var SomeStatus = map[string]bool{
-	"somestatus": true,
-}
-
-//TODO:
-//-- when used with bluemix, add parameter to assign api url for CA
 
 //=================================================================================================================================
 //  Index collections - In order to create new IDs dynamically and in progressive sorting
