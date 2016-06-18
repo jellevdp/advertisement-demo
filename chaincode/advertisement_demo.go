@@ -90,6 +90,8 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 		return t.payout_bid(stub, args)
 	} else if function == "add_device" {
 		return t.add_device(stub, args)
+	} else if function == "add_account" {
+		return t.add_account(stub, args)
 	}
 
 	return nil, errors.New("Received unknown invoke function name")
