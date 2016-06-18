@@ -61,25 +61,6 @@ type Payment struct {
 
 //=================================================================================================================================
 //  Index collections - In order to create new IDs dynamically and in progressive sorting
-//  Example:
-//    signaturesAsBytes, err := stub.GetState(signaturesIndexStr)
-//    if err != nil { return nil, errors.New("Failed to get Signatures Index") }
-//    fmt.Println("Signature index retrieved")
-//
-//    // Unmarshal the signatures index
-//    var signaturesIndex []string
-//    json.Unmarshal(signaturesAsBytes, &signaturesIndex)
-//    fmt.Println("Signature index unmarshalled")
-//
-//    // Create new id for the signature
-//    var newSignatureId string
-//    newSignatureId = "sg" + strconv.Itoa(len(signaturesIndex) + 1)
-//
-//    // append the new signature to the index
-//    signaturesIndex = append(signaturesIndex, newSignatureId)
-//    jsonAsBytes, _ := json.Marshal(signaturesIndex)
-//    err = stub.PutState(signaturesIndexStr, jsonAsBytes)
-//    if err != nil { return nil, errors.New("Error storing new signaturesIndex into ledger") }
 //=================================================================================================================================
 var accountIndexStr = "_accounts"
 var slotIndexStr = "_slots"
