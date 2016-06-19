@@ -327,7 +327,7 @@ func (t *SimpleChaincode) payout_bid(stub *shim.ChaincodeStub, args []string) ([
 	}
 
 	// 4. Get device and add bid amount to balance
-	deviceAsBytes, err := stub.GetState(s.deviceId)
+	deviceAsBytes, err := stub.GetState(s.DeviceId)
 	if err != nil { return nil, errors.New("Could not get device for payout bid ")}
 
 	var d Device
