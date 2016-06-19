@@ -104,7 +104,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
 	if function == "get_account" {
-		return t.get_account(stub, args[1])
+		return t.get_account(stub, args[0])
 	} else if function == "get_all_slots" {
 		return t.get_all_slots(stub, args)
 	} else if function == "get_all_bids" {
@@ -401,7 +401,6 @@ func (t *SimpleChaincode) get_device(stub *shim.ChaincodeStub, args []string) ([
 	return bytes, nil
 
 }
-
 
 //=================================================================================================================================
 //  Main - main - Starts up the chaincode
