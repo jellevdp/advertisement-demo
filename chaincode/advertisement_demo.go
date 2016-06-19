@@ -25,6 +25,7 @@ type Slot struct {
 	BidDeadline				int64			`json:"bidDeadline"`
 	DeviceId				string			`json:"deviceId"`
 	HighestBidAmount		int64			`json:"highestBidAmount"`
+	Processed				int64			`json:"processed"`
 }
 
 type Bid struct {
@@ -318,11 +319,21 @@ func (t *SimpleChaincode) payout_bid(stub *shim.ChaincodeStub, args []string) ([
 			accountAsBytes, err = json.Marshal(a)
 			if err != nil { return nil, errors.New("Error marshalling account")}
 
-			// Storing the updated slot
 			err = stub.PutState(a.Username, []byte(accountAsBytes))
 			if err!= nil { return nil, errors.New("Error putting Account back on ledger after paying back balance") }
 		}
 	}
+
+	// 4a. Set slot state to processed
+	s.Processed = true
+
+	// 4b. Marshall & Place slot back on ledger
+	// Place Account back on state
+	slotAsBytes, err = json.Marshal(s)
+	if err != nil { return nil, errors.New("Error marshalling slot")}
+
+	err = stub.PutState(s.Id, []byte(slotAsBytes))
+	if err!= nil { return nil, errors.New("Error putting Slot back on ledger after processing") }
 
 	return nil, nil
 }
