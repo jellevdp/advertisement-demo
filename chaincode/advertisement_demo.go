@@ -48,7 +48,7 @@ type Device struct {
 	DeviceId				string			`json:"deviceId"`
 	Hash					string			`json:"hash"`
 	Salt					string			`json:"salt"`
-	Balance					string			`json:"balance"`
+	Balance					int64			`json:"balance"`
 	Size					string			`json:"size"`
 	Lat						string			`json:"lat"`
 	Long					string			`json:"long"`
