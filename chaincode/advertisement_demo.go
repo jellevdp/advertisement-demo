@@ -112,6 +112,8 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 		return t.get_all_slots(stub, args)
 	} else if function == "get_all_bids" {
 		return t.get_all_bids(stub, args)
+	} else if function == "get_all_devices" {
+		return t.get_all_devices(stub, args)
 	} else if function == "get_slot" {
 		return t.get_slot(stub, args)
 	} else if function == "get_device" {
@@ -324,6 +326,10 @@ func (t *SimpleChaincode) payout_bid(stub *shim.ChaincodeStub, args []string) ([
 		}
 	}
 
+	// 4. Get device and add bid amount to balance
+	// 4z. Create payment
+	// TODO
+
 	// 4a. Set slot state to processed
 	s.Processed = true
 
@@ -403,6 +409,32 @@ func (t *SimpleChaincode) get_all_bids(stub *shim.ChaincodeStub, args []string) 
 	if err != nil { return nil, errors.New("Failed to marshal bids to JSON")}
 
 	return bidsJson, nil
+
+}
+
+func (t *SimpleChaincode) get_all_devices(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+
+	devicesIndexBytes, err := stub.GetState(deviceIndexStr)
+	if err != nil { return nil, errors.New("Failed to get devices index")}
+
+	var deviceIndex []string
+	err = json.Unmarshal(devicesIndexBytes, &deviceIndex)
+	if err != nil { return nil, errors.New("Could not marshal device indexes") }
+
+	var devices []Device
+	for _, deviceId := range deviceIndex {
+		bytes, err := stub.GetState(deviceId)
+		if err != nil { return nil, errors.New("Not able to get device") }
+
+		var d Device
+		err = json.Unmarshal(bytes, &d)
+		devices = append(devices, d)
+	}
+
+	devicesJson, err := json.Marshal(devices)
+	if err != nil { return nil, errors.New("Failed to marshal devices to JSON")}
+
+	return devicesJson, nil
 
 }
 
