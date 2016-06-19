@@ -25,7 +25,7 @@ type Slot struct {
 	BidDeadline				int64			`json:"bidDeadline"`
 	DeviceId				string			`json:"deviceId"`
 	HighestBidAmount		int64			`json:"highestBidAmount"`
-	Processed				int64			`json:"processed"`
+	Processed				bool			`json:"processed"`
 }
 
 type Bid struct {
