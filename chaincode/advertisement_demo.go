@@ -84,6 +84,8 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 		return t.Init(stub, "init", args)
 	} else if function == "add_slot" {
 		return t.add_slot(stub, args)
+	} else if function == "add_bid" {
+		return t.add_bid(stub, args)
 	} else if function == "place_bid" {
 		return t.place_bid(stub, args)
 	} else if function == "payout_bid" {
@@ -154,6 +156,25 @@ func (t *SimpleChaincode) add_slot(stub *shim.ChaincodeStub, args []string) ([]b
 	err = stub.PutState(string(id), []byte(args[1]))
 	if err != nil {
 		return nil, errors.New("Error putting slot on ledger")
+	}
+
+	return nil, nil
+
+}
+
+func (t *SimpleChaincode) add_bid(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+
+	//Args
+	//			0				1
+	//		  index		Bod JSON object (as string)
+	id, err:= append_id(stub, bidIndexStr, args[0], false)
+	if err != nil {
+		return nil, errors.New("Error creating new bid with id " + args[0])
+	}
+
+	err = stub.PutState(string(id), []byte(args[1]))
+	if err != nil {
+		return nil, errors.New("Error putting bid on ledger")
 	}
 
 	return nil, nil
