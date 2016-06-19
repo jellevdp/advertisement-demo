@@ -327,8 +327,26 @@ func (t *SimpleChaincode) payout_bid(stub *shim.ChaincodeStub, args []string) ([
 	}
 
 	// 4. Get device and add bid amount to balance
-	// 4z. Create payment
+	deviceAsBytes, err := stub.GetState(s.deviceId)
+	if err != nil { return nil, errors.New("Could not get device for payout bid ")}
+
+	var d Device
+	err = json.Unmarshal(deviceAsBytes, &d)
+	if err != nil { return nil, errors.New("Error unmarshalling device with deviceId: " + s.DeviceId)}
+
+	// 3b. add amount back on account balance
+	d.Balance += s.HighestBidAmount
+
+	// 3c. Marshall & Place account back on ledger
+	// Place Account back on state
+	deviceAsBytes, err = json.Marshal(d)
+	if err != nil { return nil, errors.New("Error marshalling device")}
+
+	err = stub.PutState(d.DeviceId, []byte(deviceAsBytes))
+	if err!= nil { return nil, errors.New("Error putting Device back on ledger after payout bid") }
+
 	// TODO
+	// 4z. Create payment
 
 	// 4a. Set slot state to processed
 	s.Processed = true
